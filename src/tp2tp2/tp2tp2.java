@@ -4,6 +4,15 @@
  * and open the template in the editor.
  */
 package tp2tp2;
+//package db;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
 
 /**
  *
@@ -16,6 +25,7 @@ public class tp2tp2 extends javax.swing.JFrame {
      */
     public tp2tp2() {
         initComponents();
+        
         tableBtn.hide();
         infoBtn.hide();
         formPanel.hide();
@@ -42,7 +52,7 @@ public class tp2tp2 extends javax.swing.JFrame {
         wmLbl = new javax.swing.JLabel();
         formPanel = new javax.swing.JPanel();
         namaLbl = new javax.swing.JLabel();
-        namaTf = new javax.swing.JTextField();
+        merkTf = new javax.swing.JTextField();
         platLbl = new javax.swing.JLabel();
         platTf = new javax.swing.JTextField();
         jenisLbl = new javax.swing.JLabel();
@@ -86,27 +96,28 @@ public class tp2tp2 extends javax.swing.JFrame {
 
         judulLbl.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         judulLbl.setForeground(new java.awt.Color(0, 0, 0));
-        judulLbl.setText("INI JUDUL BOSQ");
+        judulLbl.setText("MOBIL MOBILAN");
 
         javax.swing.GroupLayout headPanelLayout = new javax.swing.GroupLayout(headPanel);
         headPanel.setLayout(headPanelLayout);
         headPanelLayout.setHorizontalGroup(
             headPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headPanelLayout.createSequentialGroup()
-                .addGap(152, 152, 152)
-                .addComponent(tableBtn)
-                .addGap(33, 33, 33)
-                .addComponent(infoBtn)
+                .addGroup(headPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(headPanelLayout.createSequentialGroup()
+                        .addGap(152, 152, 152)
+                        .addComponent(tableBtn)
+                        .addGap(33, 33, 33)
+                        .addComponent(infoBtn))
+                    .addGroup(headPanelLayout.createSequentialGroup()
+                        .addGap(132, 132, 132)
+                        .addComponent(judulLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(101, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(judulLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(117, 117, 117))
             .addGroup(headPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(headPanelLayout.createSequentialGroup()
                     .addGap(56, 56, 56)
                     .addComponent(formBtn)
-                    .addContainerGap(272, Short.MAX_VALUE)))
+                    .addContainerGap(302, Short.MAX_VALUE)))
         );
         headPanelLayout.setVerticalGroup(
             headPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,8 +135,6 @@ public class tp2tp2 extends javax.swing.JFrame {
                     .addComponent(formBtn)
                     .addContainerGap()))
         );
-
-        jLayeredPane1.setPreferredSize(new java.awt.Dimension(430, 500));
 
         wmPanel.setBackground(new java.awt.Color(255, 204, 102));
 
@@ -154,10 +163,10 @@ public class tp2tp2 extends javax.swing.JFrame {
 
         namaLbl.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         namaLbl.setForeground(new java.awt.Color(0, 0, 0));
-        namaLbl.setText("NAMA");
+        namaLbl.setText("MERK");
 
-        namaTf.setBackground(new java.awt.Color(255, 255, 255));
-        namaTf.setForeground(new java.awt.Color(0, 0, 0));
+        merkTf.setBackground(new java.awt.Color(255, 255, 255));
+        merkTf.setForeground(new java.awt.Color(0, 0, 0));
 
         platLbl.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         platLbl.setForeground(new java.awt.Color(0, 0, 0));
@@ -185,6 +194,11 @@ public class tp2tp2 extends javax.swing.JFrame {
         submitBtn.setFont(new java.awt.Font("Segoe UI Black", 1, 14)); // NOI18N
         submitBtn.setForeground(new java.awt.Color(0, 0, 0));
         submitBtn.setText("SUBMIT");
+        submitBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout formPanelLayout = new javax.swing.GroupLayout(formPanel);
         formPanel.setLayout(formPanelLayout);
@@ -210,11 +224,11 @@ public class tp2tp2 extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, formPanelLayout.createSequentialGroup()
                                 .addComponent(namaLbl)
                                 .addGap(37, 37, 37)
-                                .addComponent(namaTf, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(merkTf, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(formPanelLayout.createSequentialGroup()
                         .addGap(154, 154, 154)
                         .addComponent(submitBtn)))
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
         formPanelLayout.setVerticalGroup(
             formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,7 +236,7 @@ public class tp2tp2 extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(namaLbl)
-                    .addComponent(namaTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(merkTf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(formPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(platLbl)
@@ -245,10 +259,7 @@ public class tp2tp2 extends javax.swing.JFrame {
 
         isiTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "no", "Merk", "Plat", "Warna", "Jenis"
@@ -354,14 +365,14 @@ public class tp2tp2 extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(headPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLayeredPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(headPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLayeredPane1))
         );
 
         pack();
@@ -375,6 +386,35 @@ public class tp2tp2 extends javax.swing.JFrame {
         formPanel.hide();
         infoPanel.hide();
         tablePanel.show();
+        
+         
+        
+        DefaultTableModel model = (DefaultTableModel)isiTbl.getModel();
+        model.getDataVector( ).removeAllElements( );
+        model.fireTableDataChanged( );
+
+        try{
+            
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection koneksi = DriverManager.getConnection("jdbc:mysql://localhost:3306/tp2ribet", "root", "");
+            //membuat statemen pemanggilan data pada table tblGaji dari database
+            Statement stmt = koneksi.createStatement();
+            String query        = "Select * from mobil";
+            ResultSet result   = stmt.executeQuery(query);
+
+            //penelusuran baris pada tabel tblGaji dari database
+            while(result.next ()){
+                 Object[ ] obj = new Object[5];
+                 obj[0] = result.getString("id");
+                 obj[1] = result.getString("merk");
+                 obj[2] = result.getString("plat");
+                 obj[3] = result.getString("warna");
+                 obj[4] = result.getString("jenis");
+                 model.addRow(obj);
+             }
+         }catch (Exception e){
+               JOptionPane.showMessageDialog(null, "Database Gagal Dimuat");
+            }
     }//GEN-LAST:event_tableBtnActionPerformed
 
     private void infoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoBtnActionPerformed
@@ -399,6 +439,47 @@ public class tp2tp2 extends javax.swing.JFrame {
         infoPanel.hide();
         tablePanel.hide();
     }//GEN-LAST:event_formBtnActionPerformed
+
+    private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
+        // TODO add your handling code here:
+        
+        
+
+//        mobil[] listMobil = new mobil[50];
+//        listMobil[0] = new mobil(merk, plat, warna,jenis);
+//        Object[] objs= {0, listMobil[0].getMerk(),
+//                listMobil[0].getPlat(),
+//                listMobil[0].getWarna(),
+//                listMobil[0].getJenis()
+//            };
+        if(merkTf.equals("") || platTf.equals("") || warnaTf.equals("") || jenisCB.equals("")){
+                JOptionPane.showMessageDialog(null, "Masukan data secara lengkap");
+        }else{
+            try {
+                
+                String merk = merkTf.getText();
+                String plat = platTf.getText();
+                String warna = warnaTf.getText();
+                String jenis = jenisCB.getSelectedItem().toString();
+                String query = "INSERT INTO mobil" + "(merk, plat, warna, jenis) VALUES" + " (?, ?, ?, ?)";
+//                  String query = "INSERT INTO mobil" + "(merk, plat, warna, jenis) VALUES" + " (" + merk + "," + plat + "," + warna + "," + jenis+")";
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection koneksi = DriverManager.getConnection("jdbc:mysql://localhost:3306/tp2ribet", "root", ""); 
+                PreparedStatement stmt = koneksi.prepareStatement(query);
+                stmt.setString(1, merk);
+                stmt.setString(2, plat);
+                stmt.setString(3, warna);
+                stmt.setString(4, jenis);
+                stmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Input Berhasil");
+                }
+            catch (Exception e){
+               JOptionPane.showMessageDialog(null, "error");
+            }
+        } 
+        
+
+    }//GEN-LAST:event_submitBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -448,8 +529,8 @@ public class tp2tp2 extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jenisCB;
     private javax.swing.JLabel jenisLbl;
     private javax.swing.JLabel judulLbl;
+    private javax.swing.JTextField merkTf;
     private javax.swing.JLabel namaLbl;
-    private javax.swing.JTextField namaTf;
     private javax.swing.JLabel namamhsLbl;
     private javax.swing.JLabel nimLbl;
     private javax.swing.JLabel platLbl;
